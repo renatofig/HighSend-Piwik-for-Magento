@@ -1,8 +1,10 @@
 <?php
 /**
  *
- * Piwik Extension for Magento created by Adrian Speyer
+ * HighSend + Piwik Extension for Magento created by Leroy Ware
+ * Extends Piwik Extension for Magento created by Adrian Speyer
  * Get Piwik at http://www.piwik.org - Open source web analytics
+ * Sign up for HighSend at http://www.highsend.com
  *
  * @category    Mage
  * @package     Mage_PiwikAnalytics_Controller_IndexController
@@ -16,25 +18,28 @@ class Mage_PiwikAnalytics_IndexController extends Mage_Adminhtml_Controller_Acti
     public function indexAction()
     {
 
-     $this->loadLayout();
+      $this->loadLayout();
 		
-		$active = Mage::getStoreConfig(Mage_PiwikAnalytics_Helper_Data::XML_PATH_ACTIVE);
-		$siteId = Mage::getStoreConfig(Mage_PiwikAnalytics_Helper_Data::XML_PATH_SITE); 
-		$installPath = Mage::getStoreConfig(Mage_PiwikAnalytics_Helper_Data::XML_PATH_INSTALL); 
-		$pwtoken= Mage::getStoreConfig(Mage_PiwikAnalytics_Helper_Data::XML_PATH_PWTOKEN);
+      $active = Mage::getStoreConfig(Mage_PiwikAnalytics_Helper_Data::XML_PATH_ACTIVE);
+	  $siteId = Mage::getStoreConfig(Mage_PiwikAnalytics_Helper_Data::XML_PATH_SITE); 
+	  $installPath = Mage::getStoreConfig(Mage_PiwikAnalytics_Helper_Data::XML_PATH_INSTALL); 
+	  $pwtoken= Mage::getStoreConfig(Mage_PiwikAnalytics_Helper_Data::XML_PATH_PWTOKEN);
+		
+	  $hskey = Mage::getStoreConfig(Mage_PiwikAnalytics_Helper_Data::XML_PATH_HSKEY); 
+      $hslist = Mage::getStoreConfig(Mage_PiwikAnalytics_Helper_Data::XML_PATH_HSLIST);
 
-      if (!empty($pwtoken)){
-	  $block = $this->getLayout()->createBlock('core/text', 'piwik-block')->setText('<iframe src="'.$installPath.'/index.php?module=Widgetize&action=iframe&moduleToWidgetize=Dashboard&actionToWidgetize=index&idSite='.$siteId.'&period=week&date=yesterday&token_auth='.$pwtoken.'" frameborder="0" marginheight="0" marginwidth="0" width="100%" height="1000px"></iframe>');
-       $this->_addContent($block);
-	   $this->_setActiveMenu('piwik_menu')->renderLayout();
-	   }
-	   
+       if (!empty($pwtoken) && !empty($hskey)){
+		   $block = $this->getLayout()->createBlock('core/text', 'piwik-block')->setText('<iframe src="'.$installPath.'/index.php?module=Widgetize&action=iframe&moduleToWidgetize=Dashboard&actionToWidgetize=index&idSite='.$siteId.'&period=week&date=yesterday&token_auth='.$pwtoken.'" frameborder="0" marginheight="0" marginwidth="0" width="100%" height="1000px"></iframe>');
+		   $this->_addContent($block);
+		   $this->_setActiveMenu('piwik_menu')->renderLayout();
+	   }	   
 	  	   
-	if (empty($pwtoken)){ 
-	  $block = $this->getLayout()->createBlock('core/text', 'piwik-block')->setText('You are missing your Piwik Token Auth Key. Get it from your API tab in your Piwik Install.');
-       $this->_addContent($block);
-	   $this->_setActiveMenu('piwik_menu')->renderLayout();
+	   if (empty($pwtoken) || empty($hskey)){ 
+		  $block = $this->getLayout()->createBlock('core/text', 'piwik-block')->setText('Piwik Token Auth Key and HighSend Key are required.');
+		   $this->_addContent($block);
+		   $this->_setActiveMenu('piwik_menu')->renderLayout();
 	   }
-	
+	   	
     }
+	
 }

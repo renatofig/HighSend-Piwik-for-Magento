@@ -1,8 +1,10 @@
 <?php
 /**
  *
- * Piwik Extension for Magento created by Adrian Speyer
+ * HighSend + Piwik Extension for Magento created by Leroy Ware
+ * Extends Piwik Extension for Magento created by Adrian Speyer
  * Get Piwik at http://www.piwik.org - Open source web analytics
+ * Sign up for HighSend at http://www.highsend.com
  *
  * @category    Mage
  * @package     Mage_PiwikAnalytics_Model_Observer

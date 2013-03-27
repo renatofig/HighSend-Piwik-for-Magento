@@ -1,8 +1,10 @@
 <?php
 /**
  *
- * Piwik Extension for Magento created by Adrian Speyer
+ * HighSend + Piwik Extension for Magento created by Leroy Ware
+ * Extends Piwik Extension for Magento created by Adrian Speyer
  * Get Piwik at http://www.piwik.org - Open source web analytics
+ * Sign up for HighSend at http://www.highsend.com
  *
  * @category    Mage
  * @package     Mage_PiwikAnalytics_Helper_Data
@@ -22,6 +24,9 @@ class Mage_PiwikAnalytics_Helper_Data extends Mage_Core_Helper_Abstract
     const XML_PATH_SITE =    'piwik/analytics/site';
 	const XML_PATH_INSTALL = 'piwik/analytics/install';
 	const XML_PATH_PWTOKEN = 'piwik/analytics/pwtoken';
+	
+	const XML_PATH_HSKEY   = 'piwik/settings/api_key';
+	const XML_PATH_HSLIST  = 'piwik/settings/list_name';
 	
 	
     /**

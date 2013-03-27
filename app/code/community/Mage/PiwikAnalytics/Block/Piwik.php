@@ -1,8 +1,10 @@
 <?php
 /**
  *
- * Piwik Extension for Magento created by Adrian Speyer
+ * HighSend + Piwik Extension for Magento created by Leroy Ware
+ * Extends Piwik Extension for Magento created by Adrian Speyer
  * Get Piwik at http://www.piwik.org - Open source web analytics
+ * Sign up for HighSend at http://www.highsend.com
  *
  * PiwikAnalytics Page Block
  *
@@ -92,84 +94,198 @@ class Mage_PiwikAnalytics_Block_Piwik extends Mage_Core_Block_Template
     }
 		
 		
-/**
+	/**
      * Render information when cart updated
      * http://piwik.org/docs/ecommerce-analytics/
 	 */
-    protected function _getEcommerceCartUpdate()
-    {
+    protected function _getEcommerceCartUpdate() {
 	
-	$cart = Mage::getModel('checkout/cart')->getQuote()->getAllVisibleItems();
-
-	foreach($cart as $cartitem) {
+		$cart = Mage::getModel('checkout/cart')->getQuote()->getAllVisibleItems();
 	
-	//get category name
-	$product_id = $cartitem->product_id;
-    $_product = Mage::getModel('catalog/product')->load($product_id);
-    $cats = $_product->getCategoryIds();
-    if (isset($cats)){$category_id = $cats[0];} // just grab the first id
-    $category = Mage::getModel('catalog/category')->load($category_id);
-    $category_name = $category->getName();
-	$nameofproduct = $cartitem->getName();
-	$nameofproduct = str_replace('"', "", $nameofproduct);
-	
-	if ($cartitem->getPrice() == 0 || $cartitem->getPrice() < 0.00001):
-    continue;
-  endif;
-    echo 'piwikTracker.addEcommerceItem("'.$cartitem->getSku().'","'.$nameofproduct.'","'.$category_name.'",'.$cartitem->getPrice().','.$cartitem->getQty().');';
-	echo "\n";
-	}
-	
-	//total in cart
-	$grandTotal = Mage::getModel('checkout/cart')->getQuote()->getGrandTotal();
-	if ($grandTotal == 0) echo ''; else
-	echo 'piwikTracker.trackEcommerceCartUpdate('.$grandTotal.');';
-	echo "\n";
-	}
+		foreach($cart as $cartitem) {
 		
+		//get category name
+		$product_id = $cartitem->product_id;
+		$_product = Mage::getModel('catalog/product')->load($product_id);
+		$cats = $_product->getCategoryIds();
+		if (isset($cats)){$category_id = $cats[0];} // just grab the first id
+		$category = Mage::getModel('catalog/category')->load($category_id);
+		$category_name = $category->getName();
+		$nameofproduct = $cartitem->getName();
+		$nameofproduct = str_replace('"', "", $nameofproduct);
+		
+		if ($cartitem->getPrice() == 0 || $cartitem->getPrice() < 0.00001):
+		continue;
+	    endif;
+		echo 'piwikTracker.addEcommerceItem("'.$cartitem->getSku().'","'.$nameofproduct.'","'.$category_name.'",'.$cartitem->getPrice().','.$cartitem->getQty().');';
+		
+		echo "\n";
+		
+		// added by HighSend
+		if (Mage::getSingleton('customer/session')->isLoggedIn()) {
+		   $data = array();	   
+		   $data["email"] = Mage::getSingleton('customer/session')->getCustomer()->getEmail();	  
+		   echo 'piwikTracker.setCustomVariable (1, "User", "'.$data["email"].'", scope = "visit");';
+		   
+		   $data["list_name"] = Mage::getStoreConfig(Mage_PiwikAnalytics_Helper_Data::XML_PATH_HSLIST);	  
+		   echo 'piwikTracker.setCustomVariable (2, "List", "'.$data["list_name"].'", scope = "visit");';	  
+			   
+		   $customer = Mage::getSingleton('customer/session')->getCustomer();
+		   $data["first_name"] = $customer->getData("firstname");
+		   $data["last_name"] = $customer->getData("lastname");
+		  
+		   $customerAddressId = Mage::getSingleton('customer/session')->getCustomer()->getDefaultBilling();
+		   
+		   if ($customerAddressId) {
+			   $address = Mage::getModel('customer/address')->load($customerAddressId);			   
+			   $data["address_1"] = substr($address->getData("street"), 0, stripos($address->getData("street"), "\n"));
+			   $data["address_2"] = substr($address->getData("street"), stripos($address->getData("street"), "\n")+1);
+			   $data["city"] = $address->getData("city");
+			   $data["state"] = $address->getData("region");
+			   $data["postal"] = $address->getData("postcode");
+			   $data["country"] = $address->getData("country_id");
+			   $data["phone"] = $address->getData("telephone");
+			   $data["optin"] = $this->_isSubscribed();
+		   }
+	
+		   try {
+			  $HighSend = Mage::getSingleton('piwikanalytics/sdk');
+			  $HighSend->subscribe($data);
+		   } catch(Exception $e){
+			   // handle any errors here   
+		   }
+		}
+		// end HighSend
+	
+		echo "\n";
+		}
+		
+		//total in cart
+		$grandTotal = Mage::getModel('checkout/cart')->getQuote()->getGrandTotal();
+		if ($grandTotal == 0) echo ''; else
+		echo 'piwikTracker.trackEcommerceCartUpdate('.$grandTotal.');';
+		echo "\n";
+	}		
 
 		
 	/**
      * Render information when product page view
      * http://piwik.org/docs/ecommerce-analytics/
 	 */
-    protected function _getProductPageview()
-    {
+    protected function _getProductPageview() {
 
-	$currentproduct = Mage::registry('current_product');
+		$currentproduct = Mage::registry('current_product');
+		
+		if (!($currentproduct instanceof Mage_Catalog_Model_Product)) {
+				return;
+			}
+		
+		$product_id = $currentproduct->getId();
+		$_product = Mage::getModel('catalog/product')->load($product_id);
+		$cats = $_product->getCategoryIds();
+		$category_id = $cats[0]; // just grab the first id
+		$category = Mage::getModel('catalog/category')->load($category_id);
+		$category_name = $category->getName();
+		$product = $currentproduct->getName();
+		$product = str_replace('"', "", $product);
+		
+		
+		echo 'piwikTracker.setEcommerceView("'.$currentproduct->getSku().'", "'.$product.'","'.$category_name.'",'.$currentproduct->getPrice().');';
+		
+		echo "\n";
+		
+		// added by HighSend
+		if (Mage::getSingleton('customer/session')->isLoggedIn()) {
+			
+		   $data = array();	   
+		   $data["email"] = Mage::getSingleton('customer/session')->getCustomer()->getEmail();	  
+		   echo 'piwikTracker.setCustomVariable (1, "User", "'.$data["email"].'", scope = "visit");';
+		   
+		   $data["list_name"] = Mage::getStoreConfig('piwik/settings/list_name');	  
+		   echo 'piwikTracker.setCustomVariable (2, "List", "'.$data["list_name"].'", scope = "visit");';	  
+			   
+		   $customer = Mage::getSingleton('customer/session')->getCustomer();
+		   $data["first_name"] = $customer->getData("firstname");
+		   $data["last_name"] = $customer->getData("lastname");
+		  
+		   $customerAddressId = Mage::getSingleton('customer/session')->getCustomer()->getDefaultBilling();
+		   
+		   if ($customerAddressId) {
+			   $address = Mage::getModel('customer/address')->load($customerAddressId);			   
+			   $data["address_1"] = substr($address->getData("street"), 0, stripos($address->getData("street"), "\n"));
+			   $data["address_2"] = substr($address->getData("street"), stripos($address->getData("street"), "\n")+1);
+			   $data["city"] = $address->getData("city");
+			   $data["state"] = $address->getData("region");
+			   $data["postal"] = $address->getData("postcode");
+			   $data["country"] = $address->getData("country_id");
+			   $data["phone"] = $address->getData("telephone");
+			   $data["optin"] = $this->_isSubscribed();
+		   }
 	
-	if (!($currentproduct instanceof Mage_Catalog_Model_Product)) {
-            return;
-        }
-	
-	$product_id = $currentproduct->getId();
-    $_product = Mage::getModel('catalog/product')->load($product_id);
-    $cats = $_product->getCategoryIds();
-    $category_id = $cats[0]; // just grab the first id
-    $category = Mage::getModel('catalog/category')->load($category_id);
-    $category_name = $category->getName();
-	$product = $currentproduct->getName();
-	$product = str_replace('"', "", $product);
-	
-	
-echo 'piwikTracker.setEcommerceView("'.$currentproduct->getSku().'", "'.$product.'","'.$category_name.'",'.$currentproduct->getPrice().');';
-	Mage::unregister('current_category');
+		   try {
+			  $HighSend = Mage::getSingleton('piwikanalytics/sdk');
+			  $HighSend->subscribe($data);
+		   } catch(Exception $e){
+			   // handle any errors here   
+		   }
+		  
+		} // end HighSend
+
+		Mage::unregister('current_category');
 	}	
 	
 
-/**
+	/**
      * Render information of category view
      * http://piwik.org/docs/ecommerce-analytics/
-	 */	 
-protected function _getCategoryPageview()
-    {
-	$currentcategory = Mage::registry('current_category');
+	*/	 
+	protected function _getCategoryPageview() {
+		$currentcategory = Mage::registry('current_category');
+		
+		if (!($currentcategory instanceof Mage_Catalog_Model_Category)) {
+				return;
+			}
+		echo 'piwikTracker.setEcommerceView(false,false,"'.$currentcategory->getName().'");';
+		
+		echo "\n";
+		
+		// added by HighSend
+		if (Mage::getSingleton('customer/session')->isLoggedIn()) {
+		   $data = array();	   
+		   $data["email"] = Mage::getSingleton('customer/session')->getCustomer()->getEmail();	  
+		   echo 'piwikTracker.setCustomVariable (1, "User", "'.$data["email"].'", scope = "visit");';
+		   
+		   $data["list_name"] = Mage::getStoreConfig('piwik/settings/list_name');	  
+		   echo 'piwikTracker.setCustomVariable (2, "List", "'.$data["list_name"].'", scope = "visit");';	  
+			   
+		   $customer = Mage::getSingleton('customer/session')->getCustomer();
+		   $data["first_name"] = $customer->getData("firstname");
+		   $data["last_name"] = $customer->getData("lastname");
+		  
+		   $customerAddressId = Mage::getSingleton('customer/session')->getCustomer()->getDefaultBilling();
+		   
+		   if ($customerAddressId) {
+			   $address = Mage::getModel('customer/address')->load($customerAddressId);			   
+			   $data["address_1"] = substr($address->getData("street"), 0, stripos($address->getData("street"), "\n"));
+			   $data["address_2"] = substr($address->getData("street"), stripos($address->getData("street"), "\n")+1);
+			   $data["city"] = $address->getData("city");
+			   $data["state"] = $address->getData("region");
+			   $data["postal"] = $address->getData("postcode");
+			   $data["country"] = $address->getData("country_id");
+			   $data["phone"] = $address->getData("telephone");
+			   $data["optin"] = $this->_isSubscribed();
+		   }
 	
-	if (!($currentcategory instanceof Mage_Catalog_Model_Category)) {
-            return;
-        }
-echo 'piwikTracker.setEcommerceView(false,false,"'.$currentcategory->getName().'");';
-Mage::unregister('current_product');	
+		   try {
+			  $HighSend = Mage::getSingleton('piwikanalytics/sdk');
+			  $HighSend->subscribe($data);
+		   } catch(Exception $e){
+			   // handle any errors here   
+		   }
+		   
+		} // end HighSend	
+		
+		Mage::unregister('current_product');	
 	}		
 			
 	
@@ -179,12 +295,28 @@ Mage::unregister('current_product');
      *
      * @return string
      */
-    protected function _toHtml()
-    {
+    protected function _toHtml() {
         if (!Mage::helper('piwikanalytics')->isPiwikAnalyticsAvailable()) {
             return '';
         }
 
         return parent::_toHtml();
     }
+	
+	/**
+     * Check the customer's newsletter optin status
+     * Added by HighSend
+     * @return string
+     */
+	protected function _isSubscribed() {
+	    $isSubscribed = 0;
+		$db = Mage::getSingleton('core/resource')->getConnection('core_read');
+		$sql = "SELECT * FROM `newsletter_subscriber` WHERE `subscriber_email`='".Mage::getSingleton('customer/session')->getCustomer()->getEmail()."' AND `subscriber_status`='1' LIMIT 1";
+		$result = $db->fetchAll($sql);
+		if($result){
+			$isSubscribed = 1;
+        }
+		return $isSubscribed;	
+	}
+	
 }

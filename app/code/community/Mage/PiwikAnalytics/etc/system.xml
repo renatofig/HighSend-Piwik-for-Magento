@@ -2,8 +2,10 @@
 <!--
 /**
  *
- * Piwik Extension for Magento created by Adrian Speyer
+ * HighSend + Piwik Extension for Magento created by Leroy Ware
+ * Extends Piwik Extension for Magento created by Adrian Speyer
  * Get Piwik at http://www.piwik.org - Open source web analytics
+ * Sign up for HighSend at http://www.highsend.com
  *
  * @category    Mage
  * @package     Mage_PiwikAnalytics_System
@@ -15,7 +17,7 @@
 <config>
     <sections>
         <piwik translate="label" module="piwikanalytics">
-            <label>Piwik Analytics Control</label>
+            <label>HighSend + Piwik</label>
             <tab>sales</tab>
             <frontend_type>text</frontend_type>
             <sort_order>350</sort_order>
@@ -23,6 +25,35 @@
             <show_in_website>1</show_in_website>
             <show_in_store>1</show_in_store>
             <groups>
+			    <settings>
+	            	<label>HighSend Integration</label>
+					<frontend_type>text</frontend_type>
+                    <comment><![CDATA[<a href="http://highsend.com/pages/pricing/" target="_blank">Signup for HighSend</a>]]></comment>
+	            	<sort_order>9</sort_order>
+	            	<show_in_default>1</show_in_default>
+	            	<show_in_website>1</show_in_website>
+	            	<show_in_store>1</show_in_store>
+	            	<fields>		
+						<api_key>
+	            			<label>API Key</label>
+							<comment>Find under Settings <![CDATA[>]]> API <![CDATA[&]]> FTP on HighSend.com</comment>
+	            			<frontend_type>text</frontend_type>
+	            			<sort_order>11</sort_order>
+	            			<show_in_default>1</show_in_default>
+	            			<show_in_website>1</show_in_website>
+	            			<show_in_store>1</show_in_store>
+	            		</api_key>	
+						<list_name>
+	            			<label>List Name</label>
+							<comment>The name of your HighSend subscriber list.</comment>
+	            			<frontend_type>text</frontend_type>
+	            			<sort_order>11</sort_order>
+	            			<show_in_default>1</show_in_default>
+	            			<show_in_website>1</show_in_website>
+	            			<show_in_store>1</show_in_store>
+	            		</list_name>
+	            	</fields>					
+            	</settings>
                 <analytics translate="label">
                     <label>Piwik Analytics</label>
                     <frontend_type>text</frontend_type>
