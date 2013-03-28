@@ -252,6 +252,7 @@ class Mage_HighsendAnalytics_Block_Highsend extends Mage_Core_Block_Template
 	   $data["first_name"] = $customer->getData("firstname");
 	   $data["last_name"] = $customer->getData("lastname");
 	   $data["email"] = $customer->getData("email");
+	   $data["list_name"] = Mage::getStoreConfig(Mage_HighsendAnalytics_Helper_Data::XML_PATH_HSLIST);
 	  
 	   $customerAddressId = Mage::getSingleton('customer/session')->getCustomer()->getDefaultBilling();
 	   
