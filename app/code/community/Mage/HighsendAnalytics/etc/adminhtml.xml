@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<!--
+/**
+ *
+ * HighSend + Piwik Extension for Magento created by Leroy Ware
+ * Extends Piwik Extension for Magento created by Adrian Speyer (https://github.com/adriansonline/Piwik-for-Magento)
+ * Get Piwik at http://www.piwik.org - Open source web analytics
+ * Sign up for HighSend at http://www.highsend.com
+ * 
+ * @category    Mage
+ * @package     Mage_HighsendAnalytics_etc_adminhtml
+ * @license http://www.gnu.org/licenses/gpl-3.0.html GPL v3 or later
+ *
+ */
+-->
+<config>
+	    <menu>
+        <report translate="title" module="reports">
+            <title>Reports</title>
+            <sort_order>80</sort_order>
+            <children>                                             
+                <iframe_highsend translate="title" module="reports">
+					<title>HighSend iFrame</title>
+								<sort_order>99999</sort_order>
+								<action>highsendanalytics/index/index</action>
+							<depends><config>highsend/analytics/active</config></depends>
+                </iframe_highsend>
+            </children>
+        </report>
+    </menu>
+
+	<acl>
+        <resources>
+            <admin>
+                <children>
+                    <system>
+                        <children>
+                            <config>
+                                <children>
+                                    <highsend translate="title" module="highsendanalytics">
+                                        <title>HighSend Analytics</title>									
+                                    </highsend>
+                                </children>
+                            </config>
+                        </children>
+                    </system>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+	   <acl>
+        <resources>
+            <admin>
+                <children>
+                    <report translate="title" module="reports">
+                        <title>Reports</title>
+                        <sort_order>80</sort_order>
+                        <children>
+                            <iframe_highsend translate="title">
+                                <title>HighSend Iframe</title>
+                            </iframe_highsend>
+                        </children>
+                    </report>
+                    <system>
+                        <children>
+                            <config>
+                                <children>
+                                    <reports translate="title" module="reports">
+                                        <title>Reports</title>
+                                    </reports>
+                                </children>
+                            </config>
+                        </children>
+                    </system>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+</config>

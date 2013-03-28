@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!--
+ *
+ * HighSend + Piwik Extension for Magento created by Leroy Ware
+ * Extends Piwik Extension for Magento created by Adrian Speyer (https://github.com/adriansonline/Piwik-for-Magento)
+ * Get Piwik at http://www.piwik.org - Open source web analytics
+ * Sign up for HighSend at http://www.highsend.com
+ *
+ * PiwikAnalytics Page Block
+ *
+ * @category   Mage
+ * @package    Mage_HighsendAnalytics_Piwik
+ * @license     @license http://www.gnu.org/licenses/gpl-3.0.html GPL v3 or later
+ *
+ */
+
+-->
+<layout version="0.1.0">
+
+<!--
+Default layout, loads most of the pages
+-->
+
+    <default>
+        <!-- Mage_HighsendAnalytics -->
+        <reference name="before_body_end">
+            <block type="highsendanalytics/highsend" name="highsend_analytics" as="highsend_analytics" template="highsendanalytics/highsend.phtml" />
+        </reference>
+    </default>
+</layout>

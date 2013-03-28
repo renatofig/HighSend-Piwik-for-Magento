@@ -1,0 +1,99 @@
+<?xml version="1.0"?>
+<!--
+/**
+ *
+ * HighSend + Piwik Extension for Magento created by Leroy Ware
+ * Extends Piwik Extension for Magento created by Adrian Speyer (https://github.com/adriansonline/Piwik-for-Magento)
+ * Get Piwik at http://www.piwik.org - Open source web analytics
+ * Sign up for HighSend at http://www.highsend.com
+ *
+ * @category    Mage
+ * @package     Mage_HighsendAnalytics_etc_config
+ * @license http://www.gnu.org/licenses/gpl-3.0.html GPL v3 or later
+ *
+ */
+-->
+<config>
+    <modules>
+        <Mage_HighsendAnalytics>
+            <version>1.7.0.0</version>
+        </Mage_HighsendAnalytics>
+    </modules>
+    <global>
+        <models>
+            <highsendanalytics>
+                <class>Mage_HighsendAnalytics_Model</class>
+            </highsendanalytics>
+        </models>
+        <blocks>
+            <highsendanalytics>
+                <class>Mage_HighsendAnalytics_Block</class>
+            </highsendanalytics>
+        </blocks>
+        <helpers>
+            <highsendanalytics>
+                <class>Mage_HighsendAnalytics_Helper</class>
+            </highsendanalytics>
+        </helpers>
+    </global>
+    <frontend>
+        <translate>
+            <modules>
+                <Mage_HighsendAnalytics>
+                    <files>
+                        <default>Mage_HighsendAnalytics.csv</default>
+                    </files>
+                </Mage_HighsendAnalytics>
+            </modules>
+        </translate>
+         <events>
+            <checkout_onepage_controller_success_action>
+                <observers>
+                    <highsendanalytics_order_success>
+                        <class>highsendanalytics/observer</class>
+                        <method>setPiwikAnalyticsOnOrderSuccessPageView</method>
+                    </highsendanalytics_order_success>
+                </observers>
+            </checkout_onepage_controller_success_action>
+            <checkout_multishipping_controller_success_action>
+                <observers>
+                    <highsendanalytics_order_success>
+                        <class>highsendanalytics/observer</class>
+                        <method>setPiwikAnalyticsOnOrderSuccessPageView</method>
+                    </highsendanalytics_order_success>
+                </observers>
+            </checkout_multishipping_controller_success_action>
+                    </events>
+        <layout>
+            <updates>
+                <highsendanalytics>
+                    <file>highsendanalytics.xml</file>
+                </highsendanalytics>
+            </updates>
+        </layout>
+    </frontend>
+    <adminhtml>
+        <translate>
+            <modules>
+                <Mage_HighsendAnalytics>
+                    <files>
+                        <default>Mage_HighsendAnalytics.csv</default>
+                    </files>
+                </Mage_HighsendAnalytics>
+            </modules>
+        </translate>
+    </adminhtml>
+<admin>
+        <routers>
+            <Mage_HighsendAnalytics>
+                <use>admin</use>
+                <args>
+                    <module>Mage_HighsendAnalytics</module>
+                    <frontName>highsendanalytics</frontName>
+                </args>
+            </Mage_HighsendAnalytics>
+        </routers>
+</admin>
+	
+	
+	</config>
