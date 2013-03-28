@@ -28,8 +28,7 @@ class Mage_HighsendAnalytics_Model_Observer
      *
      * @param Varien_Event_Observer $observer
      */
-    public function setPiwikAnalyticsOnOrderSuccessPageView(Varien_Event_Observer $observer)
-    {
+    public function setPiwikAnalyticsOnOrderSuccessPageView(Varien_Event_Observer $observer) {
         $orderIds = $observer->getEvent()->getOrderIds();
         if (empty($orderIds) || !is_array($orderIds)) {
             return;
@@ -39,6 +38,11 @@ class Mage_HighsendAnalytics_Model_Observer
             $block->setOrderIds($orderIds);
         }
     }
+	
+	public function saveCustomerToHighsend(Varien_Event_Observer $observer) {		
+       Mage::helper('highsendanalytics')->saveCustomerToHighsend();	   
+    }
+
 
 
    

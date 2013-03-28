@@ -127,7 +127,7 @@ class Mage_HighsendAnalytics_Block_Highsend extends Mage_Core_Block_Template
 		echo 'piwikTracker.trackEcommerceCartUpdate('.$grandTotal.');';
 		echo "\n";
 		
-		$this->_saveUserToHighSend(); // added by HighSend
+		Mage::helper('highsendanalytics')->saveCustomerToHighsend(); // added by HighSend
 	}		
 
 		
@@ -157,7 +157,7 @@ class Mage_HighsendAnalytics_Block_Highsend extends Mage_Core_Block_Template
 		
 		echo "\n";
 		
-		$this->_saveUserToHighSend(); // added by HighSend
+		Mage::helper('highsendanalytics')->saveCustomerToHighsend(); // added by HighSend
 
 		Mage::unregister('current_category');
 	}	
@@ -176,13 +176,11 @@ class Mage_HighsendAnalytics_Block_Highsend extends Mage_Core_Block_Template
 		echo 'piwikTracker.setEcommerceView(false,false,"'.$currentcategory->getName().'");';		
 		echo "\n";
 		
-		$this->_saveUserToHighSend(); // added by HighSend
+		Mage::helper('highsendanalytics')->saveCustomerToHighsend(); // added by HighSend
 		
 		Mage::unregister('current_product');	
 	}	
-	
-	
-	
+		
 	/**
      * Render email address of logged in user
 	 * Uses a visit-scope custom variable to store logged in user's email address
@@ -208,9 +206,7 @@ class Mage_HighsendAnalytics_Block_Highsend extends Mage_Core_Block_Template
 		}
 		   
 	}
-			
-	
-		
+					
     /**
      * Render Piwik tracking scripts
      *
@@ -223,58 +219,6 @@ class Mage_HighsendAnalytics_Block_Highsend extends Mage_Core_Block_Template
 
         return parent::_toHtml();
     }
-	
-	/**
-     * Check the customer's newsletter optin status
-     * Added by HighSend
-     * @return string
-     */
-	protected function _isSubscribed() {
-	    $isSubscribed = 0;
-		$db = Mage::getSingleton('core/resource')->getConnection('core_read');
-		$sql = "SELECT * FROM `newsletter_subscriber` WHERE `subscriber_email`='".Mage::getSingleton('customer/session')->getCustomer()->getEmail()."' AND `subscriber_status`='1' LIMIT 1";
-		$result = $db->fetchAll($sql);
-		if($result){
-			$isSubscribed = 1;
-        }
-		return $isSubscribed;	
-	}
-	
-	/**
-     * Save the customer to HighSend. Saved fields: first_name, last_name, email, billing address (if provided), optin status
-     * Added by HighSend
-     */
-	
-	protected function _saveUserToHighSend() {
-	   
-	   $data = array();	  			   
-	   $customer = Mage::getSingleton('customer/session')->getCustomer();
-	   $data["first_name"] = $customer->getData("firstname");
-	   $data["last_name"] = $customer->getData("lastname");
-	   $data["email"] = $customer->getData("email");
-	   $data["list_name"] = Mage::getStoreConfig(Mage_HighsendAnalytics_Helper_Data::XML_PATH_HSLIST);
-	  
-	   $customerAddressId = Mage::getSingleton('customer/session')->getCustomer()->getDefaultBilling();
-	   
-	   if ($customerAddressId) {
-		   $address = Mage::getModel('customer/address')->load($customerAddressId);			   
-		   $data["address_1"] = substr($address->getData("street"), 0, stripos($address->getData("street"), "\n"));
-		   $data["address_2"] = substr($address->getData("street"), stripos($address->getData("street"), "\n")+1);
-		   $data["city"] = $address->getData("city");
-		   $data["state"] = $address->getData("region");
-		   $data["postal"] = $address->getData("postcode");
-		   $data["country"] = $address->getData("country_id");
-		   $data["phone"] = $address->getData("telephone");
-		   $data["optin"] = $this->_isSubscribed();
-	   }
 
-	   try {
-		  $HighSend = Mage::getSingleton('highsendanalytics/sdk');
-		  $HighSend->subscribe($data);
-	   } catch(Exception $e){
-		   // handle any errors here   
-	   }
-	   	
-	}
 	
 }

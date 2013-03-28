@@ -16,7 +16,7 @@
 <config>
     <modules>
         <Mage_HighsendAnalytics>
-            <version>1.7.0.0</version>
+            <version>1.0.0.0</version>
         </Mage_HighsendAnalytics>
     </modules>
     <global>
@@ -62,8 +62,16 @@
                         <method>setPiwikAnalyticsOnOrderSuccessPageView</method>
                     </highsendanalytics_order_success>
                 </observers>
-            </checkout_multishipping_controller_success_action>
-                    </events>
+            </checkout_multishipping_controller_success_action>			
+			<customer_address_save_after>
+				<observers>
+					<highsendanalytics>
+						<class>highsendanalytics/observer</class>
+						<method>saveCustomerToHighsend</method>
+					</highsendanalytics>
+				</observers>
+            </customer_address_save_after>
+        </events>
         <layout>
             <updates>
                 <highsendanalytics>
