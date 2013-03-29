@@ -9,7 +9,7 @@
  * PiwikAnalytics Page Block
  *
  * @category   Mage
- * @package    Mage_HighsendAnalytics_Piwik
+ * @package    Mage_HighsendAnalytics_Helper_Data
  * @license     @license http://www.gnu.org/licenses/gpl-3.0.html GPL v3 or later
  *
  */
@@ -77,7 +77,6 @@ class Mage_HighsendAnalytics_Helper_Data extends Mage_Core_Helper_Abstract
 		   $data["postal"] = $address->getData("postcode");
 		   $data["country"] = $address->getData("country_id");
 		   $data["phone"] = $address->getData("telephone");
-		   //$data["optin"] = Mage::helper('highsendanalytics')->isCustomerSubscribed($data["email"]);
 	   }
 
 	   try {
