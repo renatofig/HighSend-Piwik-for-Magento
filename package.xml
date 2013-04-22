@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
     <name>HighSend</name>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <stability>stable</stability>
     <license uri="http://www.gnu.org/licenses/gpl-3.0.html">GNU General Public License (GPL)</license>
     <channel>community</channel>
@@ -10,11 +10,13 @@
 &#xD;
 </summary>
     <description>HighSend.com makes it easy to add powerful marketing automation to your Magento store.  Send automated abandoned cart emails, mobile coupons, Facebook notifications and more! </description>
-    <notes>Source code available: https://github.com/highsend/HighSend-Piwik-for-Magento</notes>
+    <notes>Source code available: https://github.com/highsend/HighSend-Piwik-for-Magento&#xD;
+&#xD;
+Revision to package extension to correct path issue.</notes>
     <authors><author><name>Leroy Ware</name><user>highsendinc</user><email>leroy@highsend.com</email></author></authors>
-    <date>2013-03-29</date>
-    <time>00:28:26</time>
-    <contents><target name="magecommunity"><dir name="Mage"><dir name="HighsendAnalytics"><dir name="Block"><file name="Highsend.php" hash="79f692ade5371605b7c7cb6f9e7aea1b"/></dir><dir name="Helper"><file name="Data.php" hash="91cfbdcda99c02e02e3d02e72f40d7fc"/></dir><dir name="Model"><file name="Observer.php" hash="28371e7b424a6e723461f704eefad9d4"/><file name="Sdk.php" hash="8467f8d5ea17f343845f1645d866d77a"/></dir><dir name="controllers"><file name="IndexController.php" hash="b27d803953ab95c1dec3948f53d1be4f"/></dir><dir name="etc"><file name="adminhtml.xml" hash="5ed93b6025d735334b23dfebc404326a"/><file name="config.xml" hash="1de2225298c189aac97c28b8d4c080a8"/><file name="system.xml" hash="6a7e25e31e4bdf4cb88fdf66da0613ec"/></dir></dir></dir><dir name="design"><dir name="frontend"><dir name="base"><dir name="default"><dir name="template"><dir name="highsendanalytics"><file name="highsend.phtml" hash=""/></dir></dir><dir name="layout"><file name="highsendanalytics.xml" hash=""/></dir></dir></dir></dir></dir><dir name="etc"><dir name="modules"><file name="highsendanalytics.xml" hash=""/></dir></dir><dir name="locale"><dir name="en_US"><file name="Mage_HighsendAnalytics.csv" hash=""/></dir></dir></target></contents>
+    <date>2013-04-22</date>
+    <time>14:00:10</time>
+    <contents><target name="magecommunity"><dir name="Mage"><dir name="HighsendAnalytics"><dir name="Block"><file name="Highsend.php" hash=""/></dir><dir name="Helper"><file name="Data.php" hash=""/></dir><dir name="Model"><file name="Observer.php" hash=""/><file name="Sdk.php" hash=""/></dir><dir name="controllers"><file name="IndexController.php" hash=""/></dir><dir name="etc"><file name="adminhtml.xml" hash=""/><file name="config.xml" hash=""/><file name="system.xml" hash=""/></dir></dir></dir></target><target name="magedesign"><dir name="frontend"><dir name="base"><dir name="default"><dir name="template"><dir name="highsendanalytics"><file name="highsend.phtml" hash=""/></dir></dir><dir name="layout"><file name="highsendanalytics.xml" hash=""/></dir></dir></dir></dir></target><target name="mageetc"><dir name="modules"><file name="highsendanalytics.xml" hash=""/></dir></target><target name="magelocale"><dir name="en_US"><file name="Mage_HighsendAnalytics.csv" hash=""/></dir></target></contents>
     <compatible/>
     <dependencies><required><php><min>5.1.0</min><max>6.0.0</max></php></required></dependencies>
 </package>
