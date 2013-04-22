@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
     <name>HighSend</name>
-    <version>1.1.0</version>
+    <version>1.1.1</version>
     <stability>stable</stability>
     <license uri="http://www.gnu.org/licenses/gpl-3.0.html">GNU General Public License (GPL)</license>
     <channel>community</channel>
@@ -15,8 +15,8 @@
 Revision to package extension to correct path issue.</notes>
     <authors><author><name>Leroy Ware</name><user>highsendinc</user><email>leroy@highsend.com</email></author></authors>
     <date>2013-04-22</date>
-    <time>14:00:10</time>
-    <contents><target name="magecommunity"><dir name="Mage"><dir name="HighsendAnalytics"><dir name="Block"><file name="Highsend.php" hash=""/></dir><dir name="Helper"><file name="Data.php" hash=""/></dir><dir name="Model"><file name="Observer.php" hash=""/><file name="Sdk.php" hash=""/></dir><dir name="controllers"><file name="IndexController.php" hash=""/></dir><dir name="etc"><file name="adminhtml.xml" hash=""/><file name="config.xml" hash=""/><file name="system.xml" hash=""/></dir></dir></dir></target><target name="magedesign"><dir name="frontend"><dir name="base"><dir name="default"><dir name="template"><dir name="highsendanalytics"><file name="highsend.phtml" hash=""/></dir></dir><dir name="layout"><file name="highsendanalytics.xml" hash=""/></dir></dir></dir></dir></target><target name="mageetc"><dir name="modules"><file name="highsendanalytics.xml" hash=""/></dir></target><target name="magelocale"><dir name="en_US"><file name="Mage_HighsendAnalytics.csv" hash=""/></dir></target></contents>
+    <time>15:19:04</time>
+    <contents><target name="magecommunity"><dir name="Mage"><dir name="HighsendAnalytics"><dir name="Block"><file name="Highsend.php" hash="84ddef094485946032f83603a9fb45b2"/></dir><dir name="Helper"><file name="Data.php" hash="14d4ea1c814147b2b7243ff0471c00a8"/></dir><dir name="Model"><file name="Observer.php" hash="b07b5f27e2a193fd2fb6b0064e32c6c7"/><file name="Sdk.php" hash="56ea685b6cdb1ad2eb2ac9f7f9b7e70b"/></dir><dir name="controllers"><file name="IndexController.php" hash="dcd05ab474cdff0eb8146a5c60104451"/></dir><dir name="etc"><file name="adminhtml.xml" hash="33805cbdee5ff822e04b75bf5e97d7a3"/><file name="config.xml" hash="25b754ac053dd55e0a5bdd48140df9b0"/><file name="system.xml" hash="d69df4172c45fe7a6046b9afdabfad18"/></dir></dir></dir></target><target name="magedesign"><dir name="frontend"><dir name="base"><dir name="default"><dir name="template"><dir name="highsendanalytics"><file name="highsend.phtml" hash="ded4e2d6e37dd131e36b85818a7276e0"/></dir></dir><dir name="layout"><file name="highsendanalytics.xml" hash="950ad32b29d5665a3145656436d7ec9e"/></dir></dir></dir></dir></target><target name="mageetc"><dir name="modules"><file name="highsendanalytics.xml" hash="0576f78b49e8348d468a5907df3d836f"/></dir></target><target name="magelocale"><dir name="en_US"><file name="Mage_HighsendAnalytics.csv" hash="430b416ddb8e273262d24b5030f5e0c2"/></dir></target></contents>
     <compatible/>
     <dependencies><required><php><min>5.1.0</min><max>6.0.0</max></php></required></dependencies>
 </package>
